@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import { apiKey } from "../firebase";
 import { getCookie, deleteCookie } from "../utils/Cookie";
 import { actionCreators as userAction } from "../features/user";
 
@@ -11,8 +12,10 @@ import styled from "styled-components";
 export default function Header() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const sessionKey = `firebase:authUser:${apiKey}:[DEFAULT]`;
+  const isSession = sessionStorage.getItem(sessionKey) ? true : false;
 
-  if (isLoggedIn) {
+  if (isLoggedIn && isSession) {
     return (
       <NavBar>
         <ImgWrap>
@@ -21,7 +24,8 @@ export default function Header() {
             // src="/images/code.jpg"
             alt="logo"
           /> */}
-          <LogoImg src="https://img.theqoo.net/img/jidAd.jpg" alt="bbokari" />
+          <LogoImg src="img/bbok1.png" alt="bbokari" />
+          <img src="/images/bbok1.jpeg" alt="bbokari" />
         </ImgWrap>
         <NavList>
           <NavLink>

@@ -3,6 +3,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer"; // 불변성 관리
 
 import { auth } from "../firebase";
+import firebase from "firebase/app";
 //import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import { setCookie, getCookie, deleteCookie } from "../utils/Cookie";
@@ -44,14 +45,17 @@ const initialState = {
 // middleware actions
 const loginFB = (id, pwd) => {
   return function (dispatch, getState, { history }) {
-    auth
+    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then((res) => {
+      auth
     .signInWithEmailAndPassword(id, pwd)
     .then((user) => {
       console.log(user);
       dispatch(setUserInfo({
         nickName: user.user.displayName,
+        id: id,
         pwd: pwd,
-        userProfile:""
+        userProfile:"",
+        uid: user.user.uid,
       })
       );
 
@@ -66,7 +70,7 @@ const loginFB = (id, pwd) => {
       }
 
       console.log(errorCode, errorMessage);
-      // ..
+    });
     });
   }
 }
@@ -85,14 +89,17 @@ const signupFB = (id, pwd, nickName) => {
     .then((user) => {
      // 회원가입 정보에 id, pwd만 넘겨주므로 nickName이 null이 되고 회원가입버튼을 누른 뒤에는 로그인이 된 상태이므로
      // 사용자의 정보를 가져와서 사용자 프로필 업데이트로 닉네임을 표출해줌
-     console.log(user);
-     auth.currentUser.updateProfile({
-       displayName: nickName,
-     }).then(() => {
+    console.log(user);
+
+    auth.currentUser
+      .updateProfile({
+        displayName: nickName,
+      })
+      .then(() => {
        // 닉네임까지 변경이 성공했다면 사용자의 로그인 상태를 바꾼다
-       dispatch(setUserInfo({ id: id, pwd: pwd, userProfile:"" }));
-       history.push("/");
-     })
+        dispatch(setUserInfo({ nickName: nickName, id: id, userProfile:"", uid: user.user.uid }));
+      history.push("/");
+      })
   }).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -111,6 +118,35 @@ const signupFB = (id, pwd, nickName) => {
 //       return state;
 //   }
 // }
+
+const loginCheckFB = () => {
+  return function (dispatch, getState, {history}) {
+    auth.onAuthStateChanged((user) => {
+      if(user) {
+        dispatch(
+          setUserInfo({
+            nickName: user.displayName,
+            userProfile: "",
+            id: user.email,
+            uid: user.uid,
+          })
+        );
+      } else {
+        dispatch(logOut());
+      }
+    })
+  }
+}
+
+const logoutFB = () => {
+  return function (dispatch, getState, {history}) {
+    auth.signOut().then(() => {
+      dispatch(logOut());
+      history.replace("/");
+      // replace 는 뒤로가기를 눌러도 그 전의 페이지를 다시 랜더해서 보여주지 않는다
+    })
+  }
+}
 
 export default handleActions({
   // 어떤 액션에 대한 내용인지 작성, produce에게 원본값을 전달하고 원본값을 가지고 어떤 작업을 할지 함수로 전달
@@ -143,5 +179,7 @@ export const actionCreators ={
   logOut,
   getUserInfo,
   loginFB,
-  signupFB
+  signupFB,
+  loginCheckFB,
+  logoutFB
 };
