@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import { getCookie, deleteCookie } from "../utils/Cookie";
+import { actionCreators as userAction } from "../features/user";
 
 // import logoImg from "../../public/images/code.jpg";
 import styled from "styled-components";
 
 export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const cookie = getCookie("userId");
-    console.log(cookie);
-
-    if (cookie) {
-      return setIsLoggedIn(true);
-    } else {
-      return setIsLoggedIn(false);
-    }
-  });
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   if (isLoggedIn) {
     return (
@@ -41,7 +33,7 @@ export default function Header() {
             <AccountLink
               to="/login"
               onClick={() => {
-                deleteCookie("userId");
+                dispatch(userAction.logOut({}));
               }}
             >
               log-out
@@ -65,7 +57,7 @@ export default function Header() {
           <AccountLink to="/login">login</AccountLink>
         </NavLink>
         <NavLink>
-          <AccountLink to="/">signUp</AccountLink>
+          <AccountLink to="/signup">signUp</AccountLink>
         </NavLink>
       </NavList>
     </NavBar>

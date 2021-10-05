@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import { getCookie, setCookie, deleteCookie } from "../utils/Cookie";
+import { actionCreators as userActions } from "../features/user";
+
 import styled from "styled-components";
 
 export default function Login(props) {
-  const login = () => {
-    console.log("getCookie", getCookie("userPwd"));
-    setCookie("userId", "felix", 3);
-    setCookie("userPwd", "abcd", 3);
+  const dispatch = useDispatch();
+
+  const [loginInput, setLoginInput] = useState({
+    id: "",
+    pwd: "",
+  });
+  const { id, pwd } = loginInput;
+
+  const setLoginAccount = (e) => {
+    const { name, value } = e.target;
+
+    setLoginInput({
+      ...loginInput,
+      [name]: value,
+    });
+    //console.log(loginUser.id);
+  };
+
+  const saveLoginDB = () => {
+    dispatch(userActions.loginFB(id, pwd));
+    // console.log("getCookie", getCookie("userPwd"));
+    // setCookie("userId", "felix", 3);
+    // setCookie("userPwd", "abcd", 3);
     // deleteCookie("userPwd");
   };
+
   return (
     // <form action="/">
     <>
@@ -32,7 +55,7 @@ export default function Login(props) {
         // inputHandler={setLoginAccount}
       />
       {/* <Button clickHandler={deleteCookie("userPwd")} /> */}
-      <Button clickHandler={login} />
+      <Button clickHandler={saveLoginDB} />
     </>
     // </form>
   );
