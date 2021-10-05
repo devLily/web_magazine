@@ -3,7 +3,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer"; // 불변성 관리
 
 import { auth } from "../firebase";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+//import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import { setCookie, getCookie, deleteCookie } from "../utils/Cookie";
 //1. action type 정의
@@ -34,16 +34,16 @@ const initialState = {
 }
 
 // user객체 하나에 대한 initial state
-const userInitial = {
-  userId:"",
-  pwd:"",
-  confirmPwd:"",
-  nickName:"",
-}
+// const userInitial = {
+//   userId:"",
+//   nickName:"",
+//   pwd:"",
+//   confirmPwd:"",
+// }
 
 // middleware actions
 const loginFB = (id, pwd) => {
-  return function (dispatch, getState, {history}) {
+  return function (dispatch, getState, { history }) {
     auth
     .signInWithEmailAndPassword(id, pwd)
     .then((user) => {
@@ -60,6 +60,10 @@ const loginFB = (id, pwd) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+
+      if(errorMessage) {
+        alert("errorMessage");
+      }
 
       console.log(errorCode, errorMessage);
       // ..

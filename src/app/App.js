@@ -15,7 +15,7 @@ export default function App() {
     <AppBody>
       <ConnectedRouter history={history}>
       <Header/>
-      <Route path="/" exact component={PostList} />
+      <Route path="#" exact component={PostList} />
       <Route path="/login" exact component={Login} />
       <Route path="/signup" exact component={Signup}/>
       </ConnectedRouter>

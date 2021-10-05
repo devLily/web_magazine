@@ -5,15 +5,11 @@ export default function Button(props) {
   const { text, clickHandler } = props;
 
   return (
-    <BtnWrap>
+    <>
       <CommonButton onClick={clickHandler}> {text}</CommonButton>
-    </BtnWrap>
+    </>
   );
 }
-
-const BtnWrap = styled.div`
-  display: flex;
-`;
 
 const CommonButton = styled.button`
   width: 150px;

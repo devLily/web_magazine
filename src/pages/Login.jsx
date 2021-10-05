@@ -17,7 +17,7 @@ export default function Login(props) {
   });
   const { id, pwd } = loginInput;
 
-  const setLoginAccount = (e) => {
+  const loginAccount = (e) => {
     const { name, value } = e.target;
 
     setLoginInput({
@@ -36,27 +36,63 @@ export default function Login(props) {
   };
 
   return (
-    // <form action="/">
-    <>
+    <SubmitArea>
       <Input
         labelText="아이디"
         type="text"
         inputName="id"
-        // inputValue={id}
-        placeholder="id를 입력해 주십시오"
-        // inputHandler={setLoginAccount}
+        inputValue={id}
+        placeholder="email을 입력해 주십시오"
+        inputHandler={loginAccount}
       />
       <Input
         labelText="비밀번호"
         type="password"
         inputName="pwd"
-        // inputValue={pwd}
+        inputValue={pwd}
         placeholder="패스워드를 입력해 주십시오"
-        // inputHandler={setLoginAccount}
+        inputHandler={loginAccount}
       />
-      {/* <Button clickHandler={deleteCookie("userPwd")} /> */}
-      <Button clickHandler={saveLoginDB} />
-    </>
-    // </form>
+      <Button text="로그인하기" clickHandler={saveLoginDB} />
+    </SubmitArea>
   );
 }
+
+const SubmitArea = styled.div`
+  /* border: 1px solid black; */
+  display: flex;
+  /* justify-content: center; */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: 150px;
+  /* align-content: center; */
+  //height: 500px;
+`;
+
+//return (
+//     <form action="/">
+//     <>
+//       <Input
+//         labelText="아이디"
+//         type="text"
+//         inputName="id"
+//         inputValue={id}
+//         placeholder="id를 입력해 주십시오"
+//         inputHandler={setLoginAccount}
+//       />
+//       <Input
+//         labelText="비밀번호"
+//         type="password"
+//         inputName="pwd"
+//         inputValue={pwd}
+//         placeholder="패스워드를 입력해 주십시오"
+//         inputHandler={setLoginAccount}
+//       />
+//       <Button clickHandler={deleteCookie("userPwd")} />
+//       <Button clickHandler={saveLoginDB} />
+//     </>
+//     </form>
+//   );
+// }

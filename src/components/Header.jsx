@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCookie, deleteCookie } from "../utils/Cookie";
 import { actionCreators as userAction } from "../features/user";
 
-// import logoImg from "../../public/images/code.jpg";
+import logoImg from "../img/bbok1.jpeg";
 import styled from "styled-components";
 
 export default function Header() {
@@ -16,11 +16,12 @@ export default function Header() {
     return (
       <NavBar>
         <ImgWrap>
-          <LogoImg
+          {/* <LogoImg
             src="https://file3.instiz.net/data/cached_img/upload/2020/12/24/0/ceed28127dadec479bca6b54a581d240.png"
             // src="/images/code.jpg"
             alt="logo"
-          />
+          /> */}
+          <LogoImg src="https://img.theqoo.net/img/jidAd.jpg" alt="bbokari" />
         </ImgWrap>
         <NavList>
           <NavLink>
@@ -28,6 +29,9 @@ export default function Header() {
           </NavLink>
           <NavLink>
             <AccountLink to="/">Notice</AccountLink>
+            {/* <AccountLink to="/">
+            알림<Badge>2</Badge>
+          </AccountLink> */}
           </NavLink>
           <NavLink>
             <AccountLink
@@ -74,7 +78,6 @@ const NavBar = styled.nav`
   align-items: center;
   padding: 15px;
   z-index: 1;
-  box-sizing: border-box;
 `;
 
 const ImgWrap = styled.div`
@@ -85,7 +88,6 @@ const ImgWrap = styled.div`
 const LogoImg = styled.img`
   width: 70px;
   height: 70px;
-  border-radius: 50%;
 `;
 
 // const LinkWrap = styled.div`
@@ -104,54 +106,29 @@ const NavLink = styled.li`
   margin: 0 4px;
   cursor: pointer;
   border-radius: 4px;
-  background-color: #d6a4a4;
+  /* background-color: #d6a4a4; */
+  /* background-color: #faaca8; */
+  /* background-color: #b993d6; */
+  background-color: #3f4c6b;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0, 2);
+  position: relative;
   /* transition: all var(--animation-duration) ease-in-out; */
+`;
+
+const Badge = styled.span`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  /* background-color: #8ca6db; */
+  background-color: #ffafbd;
+  border-radius: 50%;
 `;
 
 const AccountLink = styled(Link)`
   text-decoration: none;
-  color: #3f4c6b;
+  color: white;
+  /* color: #3f4c6b; */
 `;
-
-// const NavBar = styled.nav`
-//   text-align: center;
-//   position: fixed;
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   padding: 15px;
-//   z-index: 1;
-// `;
-
-// const LinkWrap = styled.div`
-//   display: flex;
-//   justify-content: flex-end;
-// `;
-
-// const ImgWrap = styled.div`
-//   display: flex;
-//   justify-content: flex-start;
-// `;
-
-// const NavList = styled.ul`
-//   display: flex;
-// `;
-
-// const NavLink = styled.li`
-//   padding: 8px 12px;
-//   margin: 0 4px;
-//   cursor: pointer;
-//   border-radius: 4px;
-//   background-color: #d6a4a4;
-//   transition: all var(--animation-duration) ease-in-out;
-// `;
-
-// const AccountLink = styled(Link)`
-//   text-decoration: none;
-//   color: #3f4c6b;
-// `;
-
-// const LogoImg = styled.img`
-//   width: 70px;
-//   height: 70px;
-// `;
