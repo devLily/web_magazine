@@ -18,10 +18,14 @@ export default function PostList(props) {
   }, []);
 
   return (
-    <div>
+    <ListWrap>
       {postList.map((post, index) => {
         return <Post key={post.id} {...post} />;
       })}
-    </div>
+    </ListWrap>
   );
 }
+
+const ListWrap = styled.div`
+  padding-top: 150px;
+`;

@@ -1,24 +1,29 @@
 import React from "react";
 
-import Img from "../elements/Img";
+import { Img, Button } from "../elements";
 import styled from "styled-components";
 
 export default function Post(props) {
-  const { src } = props;
   return (
     <section>
       <InfoWrap>
-        <Img shape="circle" src={src} />
-        <span>userkName 나는야코드곤듀</span>
-        <span>insertDate 17시간 전</span>
+        {/* <Img shape="circle" src={src} /> */}
+        <Wrap>
+          <Img src="img/bbok2.png" shape="circle" size="50" />
+          <Text>userkName 나는야코드곤듀</Text>
+        </Wrap>
+        <Wrap>
+          <Text>insertDate 17시간 전</Text>
+          <Button text="edit" />
+        </Wrap>
       </InfoWrap>
-      <Wrap>
-        <p>contents</p>
-      </Wrap>
-      <Wrap>
-        <Img shape="rectangle" src={src} />
-      </Wrap>
-      <p>댓글 countComment 개</p>
+      <InfoWrap>
+        <Text>contents</Text>
+      </InfoWrap>
+      <InfoWrap>
+        <Img src="img/noieasy.png" shape="rectangle" size="300" />
+      </InfoWrap>
+      <Text>댓글 countComment 개</Text>
     </section>
   );
 }
@@ -38,17 +43,24 @@ Post.defaultProps = {
 
 const InfoWrap = styled.div`
   display: flex;
-  //justify-content: space-around;
+  flex-direction: row;
+  justify-content: space-between;
+  //align-items: center;
 `;
 
 const Wrap = styled.div`
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 `;
 
 const editBnt = styled.button`
   border-radius: 5px;
 `;
 
-// const
+const Text = styled.p`
+  display: felx;
+  text-align: center;
+  align-items: center;
+  padding: 0 10px;
+`;

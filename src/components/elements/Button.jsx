@@ -12,12 +12,12 @@ export default function Button(props) {
 }
 
 const CommonButton = styled.button`
-  width: 150px;
+  width: 100px;
   padding: 10px;
-  margin: 20px;
+  margin: 10px;
   border: 0;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 5px;
   overflow: hidden;
   transition: 0.4s ease-in;
   z-index: 1;

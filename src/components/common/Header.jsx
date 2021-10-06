@@ -71,6 +71,7 @@ export default function Header() {
 }
 
 const NavBar = styled.nav`
+  background-color: white;
   border: 1px solid black;
   /* text-align: center; */
   position: fixed;

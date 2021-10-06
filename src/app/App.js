@@ -15,6 +15,8 @@ import Signup from "../pages/Signup";
 import PostList from "../pages/PostList";
 
 import styled from "styled-components";
+import PostWrite from "../pages/PostWrite";
+import PostDetail from "../pages/PostDetail";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -34,21 +36,19 @@ export default function App() {
       <Route path="/" component={PostList} exact />
       <Route path="/login" component={Login} exact />
       <Route path="/signup" component={Signup} exact/>
+      <Route path="/write" component={PostWrite} exact/>
+      <Route path="/post/:id" component={PostDetail} exact/>
       </ConnectedRouter>
       <Permit>
-        <WriteBnt>+</WriteBnt>
+        <WriteBnt onClick={() => {
+          history.push("/write")
+        }}>+</WriteBnt>
       </Permit>
     </AppBody>
   );
 }
 
 const AppBody = styled.div`
-  padding: 0;
-  margin: 0;
-  max-width: 100%;
-  overflow-x: hidden;
-  position: relative;
-  display: block;
 `;
 
 const WriteBnt = styled.button`
