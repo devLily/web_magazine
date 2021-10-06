@@ -2,16 +2,6 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-// import {
-//   FIREBASE_API_KEY,
-//   FIREBASE_AUTH_DOMAIN,
-//   FIREBASE_PROJECT_ID,
-//   FIREBASE_STORAGE_BUCKET,
-//   FIREBASE_MESSAGING_SENDER_ID,
-//   FIREBASE_APP_ID,
-//   FIREBASE_MEASUREMENT_ID,
-// } from "./config";
-
 const firebaseConfig = {
   apiKey: "AIzaSyDFAbYYSLQZbq-sA81YW-GNwMxRG5zNe8k",
   authDomain: "webmagazine-297d3.firebaseapp.com",
@@ -32,15 +22,11 @@ const firebaseConfig = {
 // };
 
 
-// Initialize Firebase
 
-//const apiKey = firebaseConfig.apiKey;
-//const auth = firebase.auth();
-//const firestore = firebase.firestore();
-
-//export { auth, apiKey };
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const apiKey = firebaseConfig.apiKey;
+const firestore = firebase.firestore();
 
-export { auth, apiKey };
+export { auth, apiKey, firestore };

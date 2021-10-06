@@ -2,11 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { apiKey } from "../firebase";
-import { getCookie, deleteCookie } from "../utils/Cookie";
-import { actionCreators as userAction } from "../features/user";
+import { apiKey } from "../../firebase";
+import { getCookie, deleteCookie } from "../../utils/Cookie";
+import { actionCreators as userAction } from "../../features/user";
 
-import logoImg from "../img/bbok1.jpeg";
 import styled from "styled-components";
 
 export default function Header() {
@@ -25,7 +24,6 @@ export default function Header() {
             alt="logo"
           /> */}
           <LogoImg src="img/bbok1.png" alt="bbokari" />
-          <img src="/images/bbok1.jpeg" alt="bbokari" />
         </ImgWrap>
         <NavList>
           <NavLink>
@@ -56,8 +54,8 @@ export default function Header() {
       <ImgWrap>
         <LogoImg
           // src="/Users/jaekyung/Desktop/bulletin-Board/public/images/logo.png"
-          src="../../public/images/code.jpg"
-          alt="logo"
+          src="img/bbok1.png"
+          alt="bbokari"
         />
       </ImgWrap>
       <NavList>
@@ -92,6 +90,7 @@ const ImgWrap = styled.div`
 const LogoImg = styled.img`
   width: 70px;
   height: 70px;
+  border-radius: 50%;
 `;
 
 // const LinkWrap = styled.div`
@@ -109,7 +108,7 @@ const NavLink = styled.li`
   padding: 8px 12px;
   margin: 0 4px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 5px;
   /* background-color: #d6a4a4; */
   /* background-color: #faaca8; */
   /* background-color: #b993d6; */

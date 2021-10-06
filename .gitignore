@@ -1,7 +1,8 @@
 node_modules
- package.json
-   yarn.lock
+.package.json
+.yarn.lock
 
+.public/img/
 
 # environment variable
 .env

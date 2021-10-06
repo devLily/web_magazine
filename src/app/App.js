@@ -9,12 +9,12 @@ import { actionCreators as userActions } from "../features/user";
 import { apiKey } from "../firebase";
 
 import Permit from "../utils/Permit";
-import Header from "../components/Header";
+import Header from "../components/common/Header";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import PostList from "../pages/PostList";
 
 import styled from "styled-components";
-import PostList from "../pages/PostList";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -31,9 +31,9 @@ export default function App() {
     <AppBody>
       <ConnectedRouter history={history}>
       <Header></Header>
-      <Route path="/postlist" exact component={PostList} />
-      <Route path="/login" exact component={Login} />
-      <Route path="/signup" exact component={Signup}/>
+      <Route path="/" component={PostList} exact />
+      <Route path="/login" component={Login} exact />
+      <Route path="/signup" component={Signup} exact/>
       </ConnectedRouter>
       <Permit>
         <WriteBnt>+</WriteBnt>
@@ -51,8 +51,17 @@ const AppBody = styled.div`
   display: block;
 `;
 
-const WriteBnt = styled.div`
+const WriteBnt = styled.button`
+  position: fixed;
+  box-sizing: border-box;
   width: 50px;
   height: 50px;
+  padding: 16px;
+  bottom: 50px;
+  right: 16px;
+  border: none;
+  border-radius: 50%;
+  font-weight: 800;
+  text-align: center;
   background-color: yellow;
 `;
