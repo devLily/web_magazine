@@ -14,7 +14,9 @@ export default function PostList(props) {
   console.log(postList);
 
   useEffect(() => {
-    dispatch(postActions.getPostFB());
+    if (!postList.length) {
+      dispatch(postActions.getPostFB());
+    }
   }, []);
 
   return (

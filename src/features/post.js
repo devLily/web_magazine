@@ -1,8 +1,9 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer"; // 불변성 관리
-import { firestore } from "../firebase";
-import moment from "moment";
 
+import { firestore, storage } from "../firebase";
+import { actionCreators as imageActions } from "./image";
+import moment from "moment";
 
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
@@ -30,26 +31,52 @@ const addPostFB = (contents = "") => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
     const tempUser = getState().user.user;
+    //console.log("tempUser", tempUser)
 
     const userInfo = {
-      userName: tempUser.userName,
-      userId: tempUser.uId,
+      userName: tempUser.nickName,
+      userId: tempUser.uid,
       userProfile: tempUser.userProfile
     }
-
+    // id: "skizoo@skzoo.com"
+    // nickName: "뽁아리"
+    // uid: "LPFv6cwdfvT0A47foeKTALxAOTq1"
+    // userProfile: ""
     const tempPost =  {
       ...initialPost,
       contents: contents,
       insertDate: moment().format("YYYY-MM-DD hh:mm:ss"),
     };
-    console.log({...userInfo, ...tempPost});
-    return;
 
-    postDB.add({...userInfo, ...tempPost}).then((doc) => {
+    const tempImg = getState().image.preview;
+    console.log(tempImg);
 
-    }).catch((err) => {
-      console.log("게시물 작성이 실패했어요", err)
-    })
+    const tempUpload = storage.ref(`images/${userInfo.userId}_${new Date().getTime()}`).putString(tempImg, "data_url");
+
+    tempUpload.then(snapshot => {
+      snapshot.ref.getDownloadURL().then(url => {
+        console.log(url);
+
+        return url;
+      }).then(url => {
+        postDB
+          .add({...userInfo, ...tempPost, imageURL: url})
+          .then((doc) => {
+            const post = {userInfo, ...tempPost, id:doc.id , imageURL: url};
+            dispatch(addPost(post));
+            history.replace("/");
+
+            dispatch(imageActions.setPreview(null));
+          })
+          .catch((err) => {
+            alert("게시물 작성에 실패했어요");
+            console.error("게시물 작성이 실패했어요", err);
+          });
+      }).catch((err) => {
+        alert("이미지 파일을 업로드하는데 실패했어요ㅠㅠ");
+        console.error("이미지 파일을 업로드하지 못했어요", err);
+      });
+    });
   }
 }
 
@@ -90,7 +117,7 @@ export default handleActions(
       draft.list = action.payload.postList;
     }),
     [ADD_POST]: (state, action) => produce(state, (draft) => {
-
+      draft.list.unshift(action.payload.post);
     }),
   }, initialState
 );

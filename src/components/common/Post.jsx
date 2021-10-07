@@ -4,26 +4,29 @@ import { Img, Button } from "../elements";
 import styled from "styled-components";
 
 export default function Post(props) {
+  const { userName } = props.userInfo;
+  const { insertDate, countComment, contents, src, imageURL } = props;
+
   return (
     <section>
       <InfoWrap>
         {/* <Img shape="circle" src={src} /> */}
         <Wrap>
-          <Img src="img/bbok2.png" shape="circle" size="50" />
-          <Text>userkName 나는야코드곤듀</Text>
+          <Img src={src} shape="circle" size="50" />
+          <Text>{userName}</Text>
         </Wrap>
         <Wrap>
-          <Text>insertDate 17시간 전</Text>
+          <Text>{insertDate}</Text>
           <Button text="edit" />
         </Wrap>
       </InfoWrap>
       <InfoWrap>
-        <Text>contents</Text>
+        <Text>{contents}</Text>
       </InfoWrap>
       <InfoWrap>
-        <Img src="img/noieasy.png" shape="rectangle" size="300" />
+        <Img src={imageURL} shape="rectangle" size="300" />
       </InfoWrap>
-      <Text>댓글 countComment 개</Text>
+      <Text>댓글 {countComment} 개</Text>
     </section>
   );
 }

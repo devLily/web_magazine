@@ -1,23 +1,44 @@
 import React from "react";
+
 import styled from "styled-components";
 
 export default function Input(props) {
-  const { labelText, type, inputName, inputValue, placeholder, inputHandler } =
-    props;
+  const {
+    labelText,
+    type,
+    inputName,
+    inputValue,
+    placeholder,
+    inputHandler,
+    inputRef,
+    disabled,
+  } = props;
 
   return (
-    <div>
+    <>
       <InputLabel htmlFor={inputName}>{labelText}</InputLabel>
-      <Inputs
-        type={type}
-        name={inputName}
-        value={inputValue}
-        placeholder={placeholder}
-        onChange={inputHandler}
-        required
-        autoFocus
-      />
-    </div>
+      {type !== "file" ? (
+        <Inputs
+          type={type}
+          name={inputName}
+          value={inputValue}
+          placeholder={placeholder}
+          onChange={inputHandler}
+          required
+          autoFocus
+        />
+      ) : (
+        <>
+          <FileInput
+            type={type}
+            name={inputName}
+            ref={inputRef}
+            onChange={inputHandler}
+            disabled={disabled}
+          />
+        </>
+      )}
+    </>
   );
 }
 
@@ -40,6 +61,10 @@ const Inputs = styled.input`
   }
 `;
 
+const FileInput = styled.input`
+  width: 100%;
+  margin: 0 auto;
+`;
 // export default function Input(props) {
 //   const { labelText, type, inputName, inputValue, placeholder, inputHandler } =
 //     props;
