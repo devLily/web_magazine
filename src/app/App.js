@@ -43,11 +43,11 @@ export default function App() {
       <Route path="/" component={PostList} exact />
       <Route path="/login" component={Login} exact />
       <Route path="/signup" component={Signup} exact/>
-      <Route path="/write/:id" component={PostWrite} exact/>
-      <Route path="/write" component={PostWrite} exact/>
-      <Route path="/post/:id" component={PostDetail} exact/>
+      <Route path="/write/:id" component={PostWrite} exact />
+      <Route path="/write" component={PostWrite} exact />
+      <Route path="/post/:id" component={PostDetail} exact />
       {/* <Route path="/search" component={Search} exact/> */}
-      <Route path="/noti" component={Notification} exact/>
+      <Route path="/noti" component={Notification} exact />
       </ConnectedRouter>
       <Permit>
         <WriteBtn onClick={() => {

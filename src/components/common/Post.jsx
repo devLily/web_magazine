@@ -1,33 +1,52 @@
 import React from "react";
-
-import { Img, Button } from "../elements";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+
+import { Img, Button, Text } from "../elements";
+import CommentList from "./CommentList";
+import CommentWrite from "./CommentWrite";
 
 export default function Post(props) {
   const { userName } = props.userInfo;
+  const { id: viewId } = useParams();
+
   const { insertDate, countComment, contents, src, imageURL, onClick, isMe } =
     props;
 
   return (
-    <section onClick={onClick}>
+    <section>
       <InfoWrap>
         {/* <Img shape="circle" src={src} /> */}
         <Wrap>
           <Img src={src} shape="circle" size="50" />
-          <Text>{userName}</Text>
+          <Text color="#757F9A" bold size="20px">
+            {userName}
+          </Text>
         </Wrap>
         <Wrap>
-          <Text>{insertDate}</Text>
+          <Text color="#757F9A" bold size="20px">
+            {insertDate}
+          </Text>
           {isMe && <Button text="edit" />}
         </Wrap>
       </InfoWrap>
-      <InfoWrap>
-        <Text>{contents}</Text>
-      </InfoWrap>
-      <InfoWrap>
+      <ClickWrap onClick={onClick}>
+        <Text color="#232526" size="16px" padding="20px 0">
+          {contents}
+        </Text>
         <Img src={imageURL} shape="rectangle" size="300" />
-      </InfoWrap>
-      <Text>댓글 {countComment} 개</Text>
+      </ClickWrap>
+      {viewId && (
+        <>
+          <CommentList postId={viewId} />
+          <CommentWrite postId={viewId} />
+        </>
+      )}
+      {!viewId && (
+        <Text color="#1F1C2C" bold size="18px" padding="10px">
+          댓글 {countComment} 개
+        </Text>
+      )}
     </section>
   );
 }
@@ -49,6 +68,7 @@ const InfoWrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 10px;
   //align-items: center;
 `;
 
@@ -58,11 +78,12 @@ const Wrap = styled.div`
   flex-direction: row;
 `;
 
-const editBnt = styled.button`
-  border-radius: 5px;
+const ClickWrap = styled.div`
+  cursor: pointer;
+  padding: 10px;
 `;
 
-const Text = styled.p`
+const Texts = styled.p`
   display: felx;
   text-align: center;
   align-items: center;

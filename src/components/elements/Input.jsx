@@ -10,6 +10,7 @@ export default function Input(props) {
     inputValue,
     placeholder,
     inputHandler,
+    inputKeyDown,
     inputRef,
     disabled,
   } = props;
@@ -24,6 +25,7 @@ export default function Input(props) {
           value={inputValue}
           placeholder={placeholder}
           onChange={inputHandler}
+          onKeyDown={inputKeyDown}
           required
           autoFocus
         />

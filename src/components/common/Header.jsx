@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { apiKey } from "../../firebase";
-import { getCookie, deleteCookie } from "../../utils/Cookie";
+// import { getCookie, deleteCookie } from "../../utils/Cookie";
 import { actionCreators as userAction } from "../../features/user";
 
 import styled from "styled-components";
+
+import NotiBadge from "./NotiBadge";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -18,23 +20,21 @@ export default function Header() {
     return (
       <NavBar>
         <ImgWrap>
-          <LogoImg src="img/bbok1.png" alt="bbokari" />
+          <LogoImg src="/img/bbok1.png" alt="bbokari" />
+          <Links to="/">덕질하는 곳</Links>
         </ImgWrap>
         <NavList>
           <NavLink>
             <AccountLink to="/">My Page</AccountLink>
           </NavLink>
           <NavLink>
-            <AccountLink to="/">Notice</AccountLink>
-            {/* <AccountLink to="/">
-            알림<Badge>2</Badge>
-          </AccountLink> */}
+            <NotiBadge />
           </NavLink>
           <NavLink>
             <AccountLink
               to="/login"
               onClick={() => {
-                dispatch(userAction.logOut({}));
+                dispatch(userAction.logoutFB({}));
               }}
             >
               log-out
@@ -47,11 +47,8 @@ export default function Header() {
   return (
     <NavBar>
       <ImgWrap>
-        <LogoImg
-          // src="/Users/jaekyung/Desktop/bulletin-Board/public/images/logo.png"
-          src="img/bbok1.png"
-          alt="bbokari"
-        />
+        <LogoImg src="/img/bbok1.png" alt="bbokari" />
+        <Link to="/" />
       </ImgWrap>
       <NavList>
         <NavLink>
@@ -87,6 +84,7 @@ const LogoImg = styled.img`
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 // const LinkWrap = styled.div`
@@ -114,20 +112,19 @@ const NavLink = styled.li`
   /* transition: all var(--animation-duration) ease-in-out; */
 `;
 
-const Badge = styled.span`
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  /* background-color: #8ca6db; */
-  background-color: #ffafbd;
-  border-radius: 50%;
-`;
-
 const AccountLink = styled(Link)`
   text-decoration: none;
   color: white;
   /* color: #3f4c6b; */
+`;
+
+const Links = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffe47a;
 `;

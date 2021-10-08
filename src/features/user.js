@@ -5,7 +5,7 @@ import { auth } from "../firebase";
 import firebase from "firebase/app";
 //import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-import { setCookie, getCookie, deleteCookie } from "../utils/Cookie";
+import { setCookie, deleteCookie } from "../utils/Cookie";
 //1. action type 정의
 // 로그인, 로그아웃, 유저정보
 // const LOG_IN = "LOG_IN";

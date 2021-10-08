@@ -5,13 +5,13 @@ import { firestore, storage } from "../firebase";
 import { actionCreators as imageActions } from "./image";
 import moment from "moment";
 
-const SET_POST = "SET_POST";
-const ADD_POST = "ADD_POST";
-const EDIT_POST = "EDIT_POST";
-const LOADING = "LOADING";
+const SET_POST = "post/SET_POST";
+const ADD_POST = "post/ADD_POST";
+const EDIT_POST = "post/EDIT_POST";
+const LOADING = "post/LOADING";
 
-const setPost = createAction(SET_POST,(postList, paging) => ({ postList, paging }));
-const addPost = createAction(ADD_POST,(post) => ({ post }));
+const setPost = createAction(SET_POST, (postList, paging) => ({ postList, paging }));
+const addPost = createAction(ADD_POST, (post) => ({ post }));
 const editPost = createAction(EDIT_POST, (postId, post) => ({
   postId,
   post,
@@ -201,11 +201,55 @@ const getPostFB = (start = null, size = 3) => {
   }
 }
 
+/**
+ const getOnePostFB = (id) => {
+ return function (dispatch, getState, { history }) {
+   const postDB = firestore.collection("post");
+    postDB
+      .doc(id)
+      .get()
+      .then((doc) => {
+        const tempPost = doc.data();
+
+        if (!tempPost) {
+          return;
+        }
+
+        const post = Object.keys(tempPost).reduce(
+          (acc, curr) => {
+            if (curr.indexOf("user") !== -1) {
+              return {
+                ...acc,
+                userInfo: { ...acc.userInfo, [curr]: tempPost[curr] },
+              };
+            }
+            return { ...acc, [curr]: tempPost[curr] };
+          },
+          { id: doc.id, userInfo: {} }
+        );
+
+        dispatch(setPost([post], { start: null, next: null, size: 3 }));
+      });
+  }
+}
+ */
 export default handleActions(
   {
     [SET_POST]: (state, action) => produce(state, (draft) => {
       draft.list.push( ...action.payload.postList);
-      draft.paging = action.payload.paging;
+
+      draft.list = draft.list.reduce((acc,curr) => {
+        if(acc.findIndex(acc => acc.id === curr.id) === -1) {
+          return [...acc, curr]
+        } else {
+          acc[acc.findIndex((acc) => acc.id === curr.id)] = curr;
+          return acc;
+        }
+      }, []);
+
+      if(action.payload.paging) {
+        draft.paging = action.payload.paging;
+      }
       draft.isLoading = false;
     }),
     [ADD_POST]: (state, action) => produce(state, (draft) => {
@@ -228,5 +272,5 @@ export const actionCreators = {
   editPost,
   getPostFB,
   addPostFB,
-  editPostFB
+  editPostFB,
 }

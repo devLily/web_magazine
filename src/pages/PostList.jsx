@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../features/post";
 import InfinityScroll from "../utils/InfinityScroll";
@@ -16,7 +16,7 @@ export default function PostList(props) {
   const paging = useSelector((state) => state.post.paging);
 
   const { history } = props;
-  console.log("userInfo", userInfo);
+  //console.log("userInfo", userInfo);
 
   const moveToPage = (type, postId) => {
     if (type === "edit") {

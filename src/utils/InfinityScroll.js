@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from "react";
 import _ from "lodash";
-import { addEventListener } from "history/DOMUtils";
+// import { addEventListener } from "history/DOMUtils";
 
 export default function InfinityScroll(props) {
-  const { children, callNext, isNext, loading } = props;
+  const { callNext, isNext, loading } = props;
 
   const handleScroll = _.throttle(() => {
     const { innerHeight } = window;
@@ -16,7 +16,7 @@ export default function InfinityScroll(props) {
     }
   }, 300);
 
-  const callbackScroll = useCallback(handleScroll, [loading]);
+  const callbackScroll = useCallback(handleScroll, [handleScroll]);
 
   useEffect (() => {
     if (loading) return;
@@ -28,7 +28,7 @@ export default function InfinityScroll(props) {
     }
 
     return () => window.removeEventListener("scroll", callbackScroll);
-  }, [isNext, loading]);
+  }, [callbackScroll, isNext, loading]);
   return (
     <>
     {props.children}

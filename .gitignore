@@ -6,3 +6,5 @@ node_modules
 
 # environment variable
 .env
+
+.firebase.js

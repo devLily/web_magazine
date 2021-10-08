@@ -1,43 +1,67 @@
-import React from "react";
-import { Grid, Image, Text } from "../elements";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as commentActions } from "../../features/comment";
+import { Img, Text } from "../elements";
 
-export default function CommentList() {
+import styled from "styled-components";
+
+export default function CommentList({ postId }) {
+  const dispatch = useDispatch();
+  const commentList = useSelector((state) => state.comment.list);
+  useEffect(() => {
+    if (!commentList[postId]) {
+      // 코멘트 정보가 없으면 불러오기
+      dispatch(commentActions.getCommentFB(postId));
+    }
+  }, []);
+
+  // comment가 없거나, postId가 없으면 아무것도 안넘겨준다!
+  if (!commentList[postId] || !postId) {
+    return null;
+  }
+
   return (
-    <React.Fragment>
-      <div padding="16px">
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-      </div>
-    </React.Fragment>
+    <div>
+      {commentList[postId].map((comment) => {
+        return <CommentItem comment={comment} key={comment.id} />;
+      })}
+    </div>
   );
 }
 
-const CommentItem = (props) => {
-  const { user_profile, user_name, user_id, post_id, contents, insert_dt } =
-    props;
+const CommentItem = ({ comment }) => {
+  const { userProfile, userName, userId, postId, contents, insert_dt } =
+    comment;
   return (
-    <div is_flex>
-      <div is_flex width="auto">
-        <Image shape="circle" />
-        <Text bold>{user_name}</Text>
-      </div>
-      <div is_flex margin="0px 4px">
-        <Text margin="0px">{contents}</Text>
-        <Text margin="0px">{insert_dt}</Text>
-      </div>
+    <div>
+      <Wrap>
+        <Img src={undefined} shape="circle" />
+        <Text bold>{userName}</Text>
+      </Wrap>
+      <Wraps>
+        <Text margin="0 20px">{contents}</Text>
+        <Text color="#7AA1D2">{insert_dt}</Text>
+      </Wraps>
     </div>
   );
 };
 
 CommentItem.defaultProps = {
-  user_profile: "",
-  user_name: "mean0",
-  user_id: "",
-  post_id: 1,
+  userProfile: "",
+  userName: "mean0",
+  userId: "",
+  postId: 1,
   contents: "귀여운 고양이네요!",
   insert_dt: "2021-01-01 19:00:00",
 };
+
+const Wrap = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Wraps = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+`;

@@ -76,6 +76,7 @@ export default function PostWrite(props) {
   const sendPost = () => {
     if (!isEdit) {
       dispatch(postActions.addPostFB(postText));
+      history.replace("/");
       return;
     }
 

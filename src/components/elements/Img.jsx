@@ -26,7 +26,7 @@ export default function Image(props) {
 
 Image.defaultProps = {
   shape: "circle",
-  src: "img/bbok2.png",
+  src: "/img/bbok2.png",
   size: 36,
 };
 

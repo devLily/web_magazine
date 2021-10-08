@@ -15,5 +15,8 @@ export default function PostDetail(props) {
 
   const post = isEdit ? postList.find((post) => post.id === postId) : null;
 
-  return <Post {...post} isMe={post.userInfo.userId === userInfo?.uid} />;
+  if (post)
+    return <Post {...post} isMe={post.userInfo.userId === userInfo?.uid} />;
+
+  return null;
 }
