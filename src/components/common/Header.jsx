@@ -18,11 +18,6 @@ export default function Header() {
     return (
       <NavBar>
         <ImgWrap>
-          {/* <LogoImg
-            src="https://file3.instiz.net/data/cached_img/upload/2020/12/24/0/ceed28127dadec479bca6b54a581d240.png"
-            // src="/images/code.jpg"
-            alt="logo"
-          /> */}
           <LogoImg src="img/bbok1.png" alt="bbokari" />
         </ImgWrap>
         <NavList>
@@ -72,7 +67,7 @@ export default function Header() {
 
 const NavBar = styled.nav`
   background-color: white;
-  border: 1px solid black;
+  border-bottom: 1px solid black;
   /* text-align: center; */
   position: fixed;
   width: 100%;
@@ -80,7 +75,7 @@ const NavBar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const ImgWrap = styled.div`

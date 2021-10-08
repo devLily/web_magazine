@@ -1,11 +1,19 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postActions } from "../features/post";
+import React from "react";
+import { useSelector } from "react-redux";
+// import { actionCreators as postActions } from "../features/post";
 
-// import Post from "../components/common/Post";
+import Post from "../components/common/Post";
 
-import styled from "styled-components";
+// import styled from "styled-components";
 
 export default function PostDetail(props) {
-  return <div>postdetail</div>;
+  const postList = useSelector((state) => state.post.list);
+  const userInfo = useSelector((state) => state.user.user);
+
+  const postId = props.match.params.id;
+  const isEdit = postId ? true : false;
+
+  const post = isEdit ? postList.find((post) => post.id === postId) : null;
+
+  return <Post {...post} isMe={post.userInfo.userId === userInfo?.uid} />;
 }

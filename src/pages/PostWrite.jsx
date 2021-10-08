@@ -1,22 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { actionCreators as postActions } from "../features/post";
 import { actionCreators as imageActions } from "../features/image";
 import { Img, Button, Text, Input } from "../components/elements";
-import { storage } from "../firebase";
+// import { storage } from "../firebase";
 
 import styled from "styled-components";
 
 export default function PostWrite(props) {
-  const { history } = props;
-
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const [postText, setPostText] = useState("");
-  const fileInput = React.useRef();
   const isUploading = useSelector((state) => state.image.isUpload);
   const preview = useSelector((state) => state.image.preview);
+  const postList = useSelector((state) => state.post.list);
+
+  const fileInput = useRef();
+
+  const { history } = props;
+  const postId = props.match.params.id;
+  const isEdit = postId ? true : false;
+
+  const post = isEdit ? postList.find((post) => post.id === postId) : null;
+  const [postText, setPostText] = useState(post ? post.contents : "");
+
+  console.log("post", post);
+
+  useEffect(() => {
+    if (isEdit && !post) {
+      alert("포스트 정보가 없습니다");
+      history.goBack();
+
+      return;
+    }
+
+    if (isEdit) {
+      dispatch(imageActions.setPreview(post.imageURL));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const goBack = () => {
     history.replace("/login");
@@ -51,6 +73,15 @@ export default function PostWrite(props) {
     dispatch(imageActions.uploadImageFB(fileInput.current.files[0]));
   };
 
+  const sendPost = () => {
+    if (!isEdit) {
+      dispatch(postActions.addPostFB(postText));
+      return;
+    }
+
+    dispatch(postActions.editPostFB(post.id, { ...post, contents: postText }));
+  };
+
   if (!isLoggedIn) {
     return (
       <WranBox>
@@ -65,7 +96,7 @@ export default function PostWrite(props) {
 
   return (
     <SectionWrap>
-      <Text>게시글 작성</Text>
+      <Text>{isEdit ? "게시글 수정" : "게시글 작성"}</Text>
       <br />
       <Input
         type="file"
@@ -91,10 +122,8 @@ export default function PostWrite(props) {
       />
       <BtnWrap>
         <Button
-          text="게시글 작성"
-          clickHandler={() => {
-            dispatch(postActions.addPostFB(postText));
-          }}
+          text={isEdit ? "게시글 수정" : "게시글 작성"}
+          clickHandler={sendPost}
         />
       </BtnWrap>
     </SectionWrap>
@@ -116,16 +145,16 @@ const WranBox = styled.div`
   padding-top: 200px;
   text-align: center;
 `;
-const TextEffect = styled.h3`
-  float: left;
-  /* color: #ffc300; */
-  color: #4b6cb7;
-`;
+// const TextEffect = styled.h3`
+//   float: left;
+//   /* color: #ffc300; */
+//   color: #4b6cb7;
+// `;
 
-const Fileinput = styled.input`
-  /* border-bottom: 1px solid black; */
-  width: 100%;
-`;
+// const Fileinput = styled.input`
+//   /* border-bottom: 1px solid black; */
+//   width: 100%;
+// `;
 
 const Label = styled.label`
   display: block;

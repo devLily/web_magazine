@@ -5,10 +5,11 @@ import styled from "styled-components";
 
 export default function Post(props) {
   const { userName } = props.userInfo;
-  const { insertDate, countComment, contents, src, imageURL } = props;
+  const { insertDate, countComment, contents, src, imageURL, onClick, isMe } =
+    props;
 
   return (
-    <section>
+    <section onClick={onClick}>
       <InfoWrap>
         {/* <Img shape="circle" src={src} /> */}
         <Wrap>
@@ -17,7 +18,7 @@ export default function Post(props) {
         </Wrap>
         <Wrap>
           <Text>{insertDate}</Text>
-          <Button text="edit" />
+          {isMe && <Button text="edit" />}
         </Wrap>
       </InfoWrap>
       <InfoWrap>

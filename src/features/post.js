@@ -7,12 +7,21 @@ import moment from "moment";
 
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
+const EDIT_POST = "EDIT_POST";
+const LOADING = "LOADING";
 
-const setPost = createAction(SET_POST,(postList) => ({ postList }));
+const setPost = createAction(SET_POST,(postList, paging) => ({ postList, paging }));
 const addPost = createAction(ADD_POST,(post) => ({ post }));
+const editPost = createAction(EDIT_POST, (postId, post) => ({
+  postId,
+  post,
+}));
+const loading = createAction(LOADING,( isLoading ) => ({ isLoading }));
 
 const initialState = {
   list: [],
+  paging: { start: null, next: null, size: 3 },
+  isLoading: false,
 }
 
 const initialPost = {
@@ -26,6 +35,62 @@ const initialPost = {
   countComment: 0,
   insertDate: moment().format("YYYY-MM-DD hh:mm:ss"),
 }
+
+const editPostFB = (postId = null, post = {}) => {
+  return function (dispatch, getState, { history }) {
+    if(!postId) {
+      alert("게시물 정보가 존재하지 않습니다");
+      return;
+    }
+    const previewImg = getState().image.preview;
+    const postIndex = getState().post.list.findIndex((post) => post.id === postId);
+    const onePost = getState().post.list[postIndex];
+
+    console.log("onePost", onePost);
+
+    const postDB = firestore.collection("post");
+
+    if(previewImg === onePost.imageURL) {
+      postDB
+      .doc(postId)
+      .update(post)
+      .then((doc) => {
+        dispatch(editPost(postId, {...post}));
+        history.replace("/");
+      });
+
+      return;
+    } else {
+      const userId = getState().user.user.uid;
+      const tempUpload = storage
+      .ref(`images/${userId}_${new Date().getTime()}`)
+      .putString(previewImg, "data_url");
+
+      tempUpload.then(snapshot => {
+        snapshot.ref
+        .getDownloadURL()
+        .then(url => {
+          console.log(url);
+
+          return url;
+        })
+        .then(url => {
+          postDB
+            .doc(postId)
+            .update({...post, imageURL:url })
+            .then((doc) => {
+              dispatch(editPost(postId, {...post, imageURL:url }));
+              history.replace("/")
+            });
+            })
+              .catch((err) => {
+                alert("이미지 파일을 업로드하는데 실패했어요ㅠㅠ");
+                console.error("이미지 파일을 업로드하지 못했어요", err);
+        });
+      });
+    }
+  };
+};
 
 const addPostFB = (contents = "") => {
   return function (dispatch, getState, { history }) {
@@ -49,13 +114,15 @@ const addPostFB = (contents = "") => {
     };
 
     const tempImg = getState().image.preview;
-    console.log(tempImg);
+    //console.log(tempImg);
 
-    const tempUpload = storage.ref(`images/${userInfo.userId}_${new Date().getTime()}`).putString(tempImg, "data_url");
+    const tempUpload = storage
+    .ref(`images/${userInfo.userId}_${new Date().getTime()}`)
+    .putString(tempImg, "data_url");
 
     tempUpload.then(snapshot => {
       snapshot.ref.getDownloadURL().then(url => {
-        console.log(url);
+        //console.log(url);
 
         return url;
       }).then(url => {
@@ -80,44 +147,77 @@ const addPostFB = (contents = "") => {
   }
 }
 
-const getPostFB = () => {
+const getPostFB = (start = null, size = 3) => {
     return function (dispatch, getState, { history }) {
-      const postDB = firestore.collection("post");
+      const tempPaging = getState().post.paging;
 
-      postDB.get().then((docs) => {
+      if (tempPaging.start && !tempPaging.next) return;
+
+      dispatch(loading(true));
+
+      const postDB = firestore.collection("post");
+      let query = postDB.orderBy("insertDate", "desc");
+
+      if (start) {
+        query = query.startAt(start);
+      }
+
+      query
+      .limit(size + 1)
+      .get()
+      .then(docs => {
         const postList = [];
+        const paging = {
+          start: docs.docs[0],
+          next: docs.docs.length === size + 1 ? docs.docs[docs.docs.length - 1] : null,
+          size: size,
+        }
 
         docs.forEach((doc) => {
           const tempPost = doc.data();
+          console.log('doc', tempPost);
           const post = Object.keys(tempPost).reduce((acc, curr) => {
           if (curr.indexOf("user") !== -1) {
             return {
               ...acc,
+              id: doc.id,
               userInfo: { ...acc.userInfo, [curr]: tempPost[curr]},
             };
           }
 
-          return { ...acc, [curr]: tempPost[curr]};
+          return { ...acc, id: doc.id, [curr]: tempPost[curr]};
         },
 
         { id: doc.id, userInfo: {}}
         );
-
+        // console.log('post', post);
         postList.push(post);
       });
 
-      dispatch(setPost(postList));
-    })
+      postList.pop();
+
+      dispatch(setPost(postList, paging));
+      })
   }
 }
 
 export default handleActions(
   {
     [SET_POST]: (state, action) => produce(state, (draft) => {
-      draft.list = action.payload.postList;
+      draft.list.push( ...action.payload.postList);
+      draft.paging = action.payload.paging;
+      draft.isLoading = false;
     }),
     [ADD_POST]: (state, action) => produce(state, (draft) => {
       draft.list.unshift(action.payload.post);
+    }),
+    [EDIT_POST]: (state, action) => produce(state, (draft) => {
+      const postIndex = draft.list.findIndex((post) => post.id === action.payload.postId);
+
+      draft.list[postIndex] = { ...draft.list[postIndex], ...action.payload.post };
+    }),
+    [LOADING]: (state, action) => produce(state, (draft) => {
+      draft.isLoading = action.payload.isLoading;
     }),
   }, initialState
 );
@@ -125,6 +225,8 @@ export default handleActions(
 export const actionCreators = {
   setPost,
   addPost,
+  editPost,
   getPostFB,
-  addPostFB
+  addPostFB,
+  editPostFB
 }
