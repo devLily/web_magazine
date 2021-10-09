@@ -10,9 +10,7 @@ export default function Notification(props) {
   const userInfo = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    if (!userInfo) {
-      return;
-    }
+    if (!userInfo) return;
 
     const notiDB = realtime.ref(`noti/${userInfo.uid}/list`);
 
@@ -26,7 +24,6 @@ export default function Notification(props) {
           .map((shot) => {
             return noti[shot];
           });
-
         setNotiList(newNotiList);
       }
     });

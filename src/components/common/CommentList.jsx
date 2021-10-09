@@ -8,6 +8,7 @@ import styled from "styled-components";
 export default function CommentList({ postId }) {
   const dispatch = useDispatch();
   const commentList = useSelector((state) => state.comment.list);
+
   useEffect(() => {
     if (!commentList[postId]) {
       dispatch(commentActions.getCommentFB(postId));
@@ -30,6 +31,7 @@ export default function CommentList({ postId }) {
 const CommentItem = ({ comment }) => {
   const { userProfile, userName, userId, postId, contents, insertDate } =
     comment;
+
   return (
     <div>
       <Wrap>
@@ -46,10 +48,10 @@ const CommentItem = ({ comment }) => {
 
 CommentItem.defaultProps = {
   userProfile: "",
-  userName: "mean0",
+  userName: "bbokari",
   userId: "",
   postId: 1,
-  contents: "귀여운 고양이네요!",
+  contents: "ㅇㅅㅇb",
   insertDate: "2021-01-01 19:00:00",
 };
 

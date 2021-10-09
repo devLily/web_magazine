@@ -1,17 +1,27 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 
 import { Img, Button, Text } from "../elements";
 import CommentList from "./CommentList";
 import CommentWrite from "./CommentWrite";
 
+import styled from "styled-components";
 export default function Post(props) {
   const { userName } = props.userInfo;
   const { id: viewId } = useParams();
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  const { insertDate, countComment, contents, src, imageURL, onClick, isMe } =
-    props;
+  const {
+    id,
+    insertDate,
+    countComment,
+    contents,
+    src,
+    imageURL,
+    onClick,
+    isMe,
+  } = props;
 
   return (
     <section>
@@ -26,10 +36,12 @@ export default function Post(props) {
           <Text color="#757F9A" bold size="20px">
             {insertDate}
           </Text>
-          {isMe && <Button text="edit" />}
+          {isMe && (
+            <Button text="edit" clickHandler={() => onClick("edit", id)} />
+          )}
         </Wrap>
       </InfoWrap>
-      <ClickWrap onClick={onClick}>
+      <ClickWrap onClick={() => (!viewId ? onClick("detail", id) : null)}>
         <Text color="#232526" size="16px" padding="20px 0">
           {contents}
         </Text>
@@ -38,7 +50,7 @@ export default function Post(props) {
       {viewId && (
         <>
           <CommentList postId={viewId} />
-          <CommentWrite postId={viewId} />
+          {isLoggedIn && <CommentWrite postId={viewId} />}
         </>
       )}
       {!viewId && (

@@ -20,7 +20,6 @@ const rootReducer = combineReducers({
 
 const middlewares = [thunk.withExtraArgument({history: history})];
 
-// 현재 작업중인 환경 (ex. 개발환경, 배포환경)
 const env = process.env.NODE_ENV;
 
 if (env === "development") {
@@ -28,7 +27,6 @@ if (env === "development") {
   middlewares.push(logger);
 }
 
-// redux devTools 설정
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({

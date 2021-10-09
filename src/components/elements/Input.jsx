@@ -46,6 +46,7 @@ export default function Input(props) {
 
 const InputLabel = styled.label`
   text-align: left;
+  min-width: 90px;
 `;
 
 const Inputs = styled.input`

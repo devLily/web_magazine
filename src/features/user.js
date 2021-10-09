@@ -25,7 +25,6 @@ const loginFB = (id, pwd) => {
       auth
     .signInWithEmailAndPassword(id, pwd)
     .then((user) => {
-      console.log(user);
       dispatch(setUserInfo({
         nickName: user.user.displayName,
         id: id,
@@ -42,7 +41,7 @@ const loginFB = (id, pwd) => {
       const errorMessage = error.message;
 
       if(errorMessage) {
-        alert("errorMessage");
+       alert("로그인에 실패하였습니다.");
       }
 
       console.log(errorCode, errorMessage);

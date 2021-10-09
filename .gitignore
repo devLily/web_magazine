@@ -2,13 +2,11 @@ node_modules
 .package.json
 .yarn.lock
 
-.public/img/
+public/img/
 .gitignore
 
 # environment variable
 .env
-
-.firebase.js
 
 .DS_STORE
 node_modules

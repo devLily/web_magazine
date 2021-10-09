@@ -46,8 +46,6 @@ const editPostFB = (postId = null, post = {}) => {
     const postIndex = getState().post.list.findIndex((post) => post.id === postId);
     const onePost = getState().post.list[postIndex];
 
-    console.log("onePost", onePost);
-
     const postDB = firestore.collection("post");
 
     if(previewImg === onePost.imageURL) {
@@ -70,7 +68,6 @@ const editPostFB = (postId = null, post = {}) => {
         snapshot.ref
         .getDownloadURL()
         .then(url => {
-          console.log(url);
 
           return url;
         })
@@ -96,17 +93,13 @@ const addPostFB = (contents = "") => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
     const tempUser = getState().user.user;
-    //console.log("tempUser", tempUser)
 
     const userInfo = {
       userName: tempUser.nickName,
       userId: tempUser.uid,
       userProfile: tempUser.userProfile
     }
-    // id: "skizoo@skzoo.com"
-    // nickName: "뽁아리"
-    // uid: "LPFv6cwdfvT0A47foeKTALxAOTq1"
-    // userProfile: ""
+
     const tempPost =  {
       ...initialPost,
       contents: contents,
@@ -114,7 +107,6 @@ const addPostFB = (contents = "") => {
     };
 
     const tempImg = getState().image.preview;
-    //console.log(tempImg);
 
     const tempUpload = storage
     .ref(`images/${userInfo.userId}_${new Date().getTime()}`)
@@ -122,7 +114,6 @@ const addPostFB = (contents = "") => {
 
     tempUpload.then(snapshot => {
       snapshot.ref.getDownloadURL().then(url => {
-        //console.log(url);
 
         return url;
       }).then(url => {

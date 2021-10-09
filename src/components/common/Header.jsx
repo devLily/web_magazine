@@ -47,7 +47,7 @@ export default function Header() {
     <NavBar>
       <ImgWrap>
         <LogoImg src="/img/bbok1.png" alt="bbokari" />
-        <Link to="/" />
+        <Links to="/">덕질하는 곳</Links>
       </ImgWrap>
       <NavList>
         <NavLink>

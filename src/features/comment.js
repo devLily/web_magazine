@@ -12,7 +12,6 @@ const LOADING = "LOADING";
 
 const setComment = createAction(SET_COMMENT, (postId, commentList) => ({ postId, commentList }));
 const addComment = createAction(ADD_COMMENT, (postId, comment) => ({postId, comment}));
-
 // const loading = createAction(LOADING, (isLoading) => ({ isLoading }));
 
 const initialState = {
@@ -37,7 +36,7 @@ const getCommentFB = (postId = null) => {
         });
         dispatch(setComment(postId, commentList));
       }).catch(err => {
-          console.log("댓글 가져오기 실패!", postId, err);
+          console.error("댓글 가져오기 실패!", postId, err);
       });
   };
 };
@@ -61,7 +60,6 @@ const addCommentFB = (postId, contents) => {
       comment = { ...comment, id: doc.id };
 
       const post = getState().post.list.find((post) => post.id === postId);
-
       const increment = fieldValue.increment(1);
 
       postDB
@@ -69,7 +67,6 @@ const addCommentFB = (postId, contents) => {
         .update({ countComment: increment })
         .then((_post) => {
           dispatch(addComment(postId, comment));
-          // post가 있을 때만 post의 countComment를 +1
           if (post) {
             dispatch(
               postActions.editPost(postId, {
@@ -77,6 +74,7 @@ const addCommentFB = (postId, contents) => {
               })
             );
           }
+
           const notiItem = realtime
             .ref(`noti/${post.userInfo.userId}/list`)
             .push();
@@ -88,11 +86,9 @@ const addCommentFB = (postId, contents) => {
             insertDate: comment.insertDate
           }, (err) => {
             if (err){
-                console.log('알림 저장 실패');
+                console.error("알림 저장 실패");
             } else {
-              // 알림이 가게 해줍니다!
               const notiDB = realtime.ref(`noti/${post.userInfo.userId}`);
-              // 읽음 상태를 false로 바꿔주면 되겠죠!
               notiDB.update({ read: false });
             }
           });
@@ -101,31 +97,30 @@ const addCommentFB = (postId, contents) => {
   };
 };
 
-
 export default handleActions(
   {
     [SET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
         draft.list[action.payload.postId] = action.payload.commentList;
       }),
-      [ADD_COMMENT]: (state, action) => produce(state, (draft) => {
-        const commentListByPostId = draft.list[action.payload.postId];
-        console.log('commentListByPostId', draft.list);
-        if (commentListByPostId) {
-          draft.list[action.payload.postId] = [...commentListByPostId, action.payload.comment];
-        } else {
-          draft.list = {
-            [action.payload.postId]: [ action.payload.comment ]
-          }
-        }
 
+    [ADD_COMMENT]: (state, action) => produce(state, (draft) => {
+      const commentListByPostId = draft.list[action.payload.postId];
+
+      if (commentListByPostId) {
+        draft.list[action.payload.postId] = [...commentListByPostId, action.payload.comment];
+      } else {
+        draft.list = {
+          [action.payload.postId]: [ action.payload.comment ]
+        }
+      }
       }),
+
       [LOADING]: (state, action) =>
-      produce(state, (draft) => {
-        draft.isLoading = action.payload.isLoading;
-      })
-  },
-  initialState
+        produce(state, (draft) => {
+          draft.isLoading = action.payload.isLoading;
+        }),
+},initialState
 );
 
 export const actionCreators = {

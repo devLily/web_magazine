@@ -39,22 +39,9 @@ export default function PostList(props) {
       <ListWrap>
         {postList.map((post) => {
           if (post.userInfo.userId === userInfo?.uid) {
-            return (
-              <Post
-                onClick={() => moveToPage("edit", post.id)}
-                key={post.id}
-                {...post}
-                isMe
-              />
-            );
+            return <Post onClick={moveToPage} key={post.id} {...post} isMe />;
           } else {
-            return (
-              <Post
-                onClick={() => moveToPage("detail", post.id)}
-                key={post.id}
-                {...post}
-              />
-            );
+            return <Post onClick={moveToPage} key={post.id} {...post} />;
           }
         })}
       </ListWrap>

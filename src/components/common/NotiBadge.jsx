@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 
 import { realtime } from "../../firebase";
 
-export default function NotiBadge() {
+import styled from "styled-components";
+
+export default function NotiBadge(props) {
   const userInfo = useSelector((state) => state.user.user);
   const [isReadNoti, setIReadNoti] = useState(true);
 
@@ -19,10 +20,15 @@ export default function NotiBadge() {
     });
 
     return () => notiDB.off();
-  }, [userInfo?.uid]);
+  }, []);
+
+  const notiCheck = () => {
+    const notiDB = realtime.ref(`noti/${userInfo?.uid}`);
+    notiDB.update({ read: true });
+  };
 
   return (
-    <AccountLink to={`/noti`}>
+    <AccountLink to={`/noti`} onClick={notiCheck}>
       알림
       {!isReadNoti && <Badge />}
     </AccountLink>
@@ -31,10 +37,10 @@ export default function NotiBadge() {
 
 const Badge = styled.span`
   position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 24px;
-  height: 24px;
+  width: 10px;
+  height: 10px;
+  right: -5px;
+  top: -5px;
   line-height: 24px;
   background-color: #ffafbd;
   border-radius: 50%;
