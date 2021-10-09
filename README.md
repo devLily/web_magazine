@@ -1,6 +1,7 @@
 # WEB MAGAZINE
 
 로그인을 통해 인증을 완료한 사용자용 매거진 사이트
+firebase hosting 배포 완료 : https://webmagazine-297d3.web.app/
 
 ## 목적
 
