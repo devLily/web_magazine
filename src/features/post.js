@@ -175,7 +175,7 @@ const getPostFB = (start = null, size = 3) => {
 
         docs.forEach((doc) => {
           const tempPost = doc.data();
-          console.log('doc', tempPost);
+
           const post = Object.keys(tempPost).reduce((acc, curr) => {
           if (curr.indexOf("user") !== -1) {
             return {
@@ -190,7 +190,7 @@ const getPostFB = (start = null, size = 3) => {
 
         { id: doc.id, userInfo: {}}
         );
-        // console.log('post', post);
+
         postList.push(post);
       });
 
@@ -232,6 +232,7 @@ const getPostFB = (start = null, size = 3) => {
       });
   }
 }
+
  */
 export default handleActions(
   {

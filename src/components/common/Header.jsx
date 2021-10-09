@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { apiKey } from "../../firebase";
-// import { getCookie, deleteCookie } from "../../utils/Cookie";
 import { actionCreators as userAction } from "../../features/user";
 
-import styled from "styled-components";
-
 import NotiBadge from "./NotiBadge";
+
+import styled from "styled-components";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -65,7 +64,6 @@ export default function Header() {
 const NavBar = styled.nav`
   background-color: white;
   border-bottom: 1px solid black;
-  /* text-align: center; */
   position: fixed;
   width: 100%;
   display: flex;
@@ -87,10 +85,6 @@ const LogoImg = styled.img`
   cursor: pointer;
 `;
 
-// const LinkWrap = styled.div`
-//   display: flex;
-// `;
-
 const NavList = styled.ul`
   display: flex;
   flex-direction: row;
@@ -103,19 +97,14 @@ const NavLink = styled.li`
   margin: 0 4px;
   cursor: pointer;
   border-radius: 5px;
-  /* background-color: #d6a4a4; */
-  /* background-color: #faaca8; */
-  /* background-color: #b993d6; */
   background-color: #3f4c6b;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0, 2);
   position: relative;
-  /* transition: all var(--animation-duration) ease-in-out; */
 `;
 
 const AccountLink = styled(Link)`
   text-decoration: none;
   color: white;
-  /* color: #3f4c6b; */
 `;
 
 const Links = styled(Link)`

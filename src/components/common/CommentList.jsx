@@ -10,12 +10,10 @@ export default function CommentList({ postId }) {
   const commentList = useSelector((state) => state.comment.list);
   useEffect(() => {
     if (!commentList[postId]) {
-      // 코멘트 정보가 없으면 불러오기
       dispatch(commentActions.getCommentFB(postId));
     }
   }, []);
 
-  // comment가 없거나, postId가 없으면 아무것도 안넘겨준다!
   if (!commentList[postId] || !postId) {
     return null;
   }
@@ -30,7 +28,7 @@ export default function CommentList({ postId }) {
 }
 
 const CommentItem = ({ comment }) => {
-  const { userProfile, userName, userId, postId, contents, insert_dt } =
+  const { userProfile, userName, userId, postId, contents, insertDate } =
     comment;
   return (
     <div>
@@ -40,7 +38,7 @@ const CommentItem = ({ comment }) => {
       </Wrap>
       <Wraps>
         <Text margin="0 20px">{contents}</Text>
-        <Text color="#7AA1D2">{insert_dt}</Text>
+        <Text color="#7AA1D2">{insertDate}</Text>
       </Wraps>
     </div>
   );
@@ -52,7 +50,7 @@ CommentItem.defaultProps = {
   userId: "",
   postId: 1,
   contents: "귀여운 고양이네요!",
-  insert_dt: "2021-01-01 19:00:00",
+  insertDate: "2021-01-01 19:00:00",
 };
 
 const Wrap = styled.div`

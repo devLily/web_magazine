@@ -13,7 +13,6 @@ export default function NotiBadge() {
     const notiDB = realtime.ref(`noti/${userInfo?.uid}`);
 
     notiDB.on("value", (snapshot) => {
-      //console.log(snapshot.val());
       if (snapshot.val()) {
         setIReadNoti(snapshot.val().read);
       }
@@ -37,7 +36,6 @@ const Badge = styled.span`
   width: 24px;
   height: 24px;
   line-height: 24px;
-  /* background-color: #8ca6db; */
   background-color: #ffafbd;
   border-radius: 50%;
 `;
@@ -45,5 +43,4 @@ const Badge = styled.span`
 const AccountLink = styled(Link)`
   text-decoration: none;
   color: white;
-  /* color: #3f4c6b; */
 `;

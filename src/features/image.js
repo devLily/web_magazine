@@ -24,11 +24,8 @@ const uploadImageFB = (image) => {
     const uploadFile = storage.ref(`images/${image.name}`).put(image);
 
     uploadFile.then((snapshot) => {
-      //console.log(snapshot);
-      //dispatch(isUpload(false));
       snapshot.ref.getDownloadURL().then((url) => {
         dispatch(uploadImage(url));
-        //console.log(url);
       });
     });
   }

@@ -1,7 +1,5 @@
 import React, { useEffect, useCallback } from "react";
 import _ from "lodash";
-// import { addEventListener } from "history/DOMUtils";
-
 export default function InfinityScroll(props) {
   const { callNext, isNext, loading } = props;
 

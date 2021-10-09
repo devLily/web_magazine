@@ -16,19 +16,15 @@ export default function Notification(props) {
 
     const notiDB = realtime.ref(`noti/${userInfo.uid}/list`);
 
-    // firebase realtime database는 내림차순 정렬을 지원하지 않아요!
-    // 데이터를 가져온 후 직접 역순으로 내보내야 합니다!
-    const notificationSnaps = notiDB.orderByChild("insert_dt");
+    const notificationSnaps = notiDB.orderByChild("insertDate");
 
     notificationSnaps.once("value", (snapshot) => {
       if (snapshot.exists()) {
-        let noti = snapshot.val();
-
-        // reserse()는 배열을 역순으로 뒤집어줘요.
+        const noti = snapshot.val();
         const newNotiList = Object.keys(noti)
           .reverse()
-          .map((s) => {
-            return noti[s];
+          .map((shot) => {
+            return noti[shot];
           });
 
         setNotiList(newNotiList);

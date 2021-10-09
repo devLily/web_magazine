@@ -14,7 +14,6 @@ export default function CommentWrite({ postId }) {
   };
 
   const handleKeyDown = (e) => {
-    // e.preventDefault();
     if (e.key === "Enter") {
       writeComment();
     }
@@ -25,9 +24,7 @@ export default function CommentWrite({ postId }) {
       alert("댓글을 입력해주세요!");
       return;
     }
-    // 파이어스토어에 추가합니다.
     dispatch(commentActions.addCommentFB(postId, commentText));
-    // 입력된 텍스트는 지우기!
     setCommentText("");
   };
 

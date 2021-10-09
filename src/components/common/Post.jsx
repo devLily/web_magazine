@@ -16,7 +16,6 @@ export default function Post(props) {
   return (
     <section>
       <InfoWrap>
-        {/* <Img shape="circle" src={src} /> */}
         <Wrap>
           <Img src={src} shape="circle" size="50" />
           <Text color="#757F9A" bold size="20px">
@@ -81,11 +80,4 @@ const Wrap = styled.div`
 const ClickWrap = styled.div`
   cursor: pointer;
   padding: 10px;
-`;
-
-const Texts = styled.p`
-  display: felx;
-  text-align: center;
-  align-items: center;
-  padding: 0 10px;
 `;

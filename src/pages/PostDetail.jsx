@@ -1,10 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-// import { actionCreators as postActions } from "../features/post";
 
 import Post from "../components/common/Post";
-
-// import styled from "styled-components";
 
 export default function PostDetail(props) {
   const postList = useSelector((state) => state.post.list);

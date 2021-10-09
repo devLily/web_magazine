@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { actionCreators as userActions } from "../features/user";
 
 import Input from "../components/elements/Input";
 import Button from "../components/elements/Button";
-// import { getCookie, setCookie, deleteCookie } from "../utils/Cookie";
 
 import styled from "styled-components";
 
@@ -32,7 +32,6 @@ export default function Signup(props) {
       alert("비밀번호가 일치하지 않습니다");
       return;
     }
-    //console.log("id:", id, "pwd:", pwd, "nickName:", nickName);
     dispatch(userActions.signupFB(id, pwd, nickName));
   };
 
@@ -76,22 +75,10 @@ export default function Signup(props) {
 }
 
 const SubmitArea = styled.div`
-  /* border: 1px solid black; */
   display: flex;
-  /* justify-content: center; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
   padding-top: 150px;
-  /* align-content: center; */
 `;
-
-//   return (
-//     <>
-//       <Input />
-//       <Input />
-//       <Button clickHandler={saveSignupDB}>회원가입하기</Button>
-//     </>
-//   );
-// }

@@ -1,14 +1,8 @@
 import React from "react";
-
 import Img from "../elements/Img";
-// import styled from "styled-components";
 
 export default function Card(props) {
-  const {
-    imageURL,
-    userName,
-    // postId
-  } = props;
+  const { imageURL, userName } = props;
 
   return (
     <div>

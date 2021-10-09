@@ -6,7 +6,7 @@ export default function Button(props) {
 
   return (
     <>
-      <CommonButton onClick={clickHandler}> {text}</CommonButton>
+      <CommonButton onClick={clickHandler}>{text}</CommonButton>
     </>
   );
 }

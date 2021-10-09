@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import { actionCreators as postActions } from "../features/post";
+
 import InfinityScroll from "../utils/InfinityScroll";
 import Post from "../components/common/Post";
-
-// import { getCookie, setCookie, deleteCookie } from "../utils/Cookie";
 
 import styled from "styled-components";
 
@@ -16,7 +16,6 @@ export default function PostList(props) {
   const paging = useSelector((state) => state.post.paging);
 
   const { history } = props;
-  //console.log("userInfo", userInfo);
 
   const moveToPage = (type, postId) => {
     if (type === "edit") {
@@ -66,7 +65,3 @@ export default function PostList(props) {
 const ListWrap = styled.div`
   padding-top: 150px;
 `;
-
-// const ClickWrap = styled.div`
-//   display: flex;
-// `;

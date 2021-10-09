@@ -6,10 +6,8 @@ import { firestore, realtime, fieldValue } from "../firebase";
 
 import { actionCreators as postActions } from "./post";
 
-
 const SET_COMMENT = "SET_COMMENT";
 const ADD_COMMENT = "ADD_COMMENT";
-
 const LOADING = "LOADING";
 
 const setComment = createAction(SET_COMMENT, (postId, commentList) => ({ postId, commentList }));
@@ -26,23 +24,17 @@ const getCommentFB = (postId = null) => {
   return function (dispatch, getState, { history }) {
     const commentDB = firestore.collection("comment");
 
-		// postId가 없으면 바로 리턴하기!
-    if(!postId){
-        return;
-    }
+    if(!postId) return;
 
-    // where로 게시글 id가 같은 걸 찾고,
-    // orderBy로 정렬해줍니다.
     commentDB
       .where("postId", "==", postId)
-      .orderBy("insert_dt", "desc")
+      .orderBy("insertDate", "desc")
       .get()
       .then((docs) => {
         let commentList = [];
         docs.forEach((doc) => {
           commentList = [ ...commentList, { ...doc.data(), id: doc.id } ];
         });
-        // 가져온 데이터를 넣어주자!
         dispatch(setComment(postId, commentList));
       }).catch(err => {
           console.log("댓글 가져오기 실패!", postId, err);
@@ -55,28 +47,23 @@ const addCommentFB = (postId, contents) => {
     const commentDB = firestore.collection("comment");
     const userInfo = getState().user.user;
 
-    console.log('userInfo', userInfo);
-
     let comment = {
       postId: postId,
       userId: userInfo.uid,
       userName: userInfo.nickName,
       userProfile: userInfo.userProfile,
       contents: contents,
-      insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
+      insertDate: moment().format("YYYY-MM-DD hh:mm:ss"),
     };
 
-    // firestore에 코멘트 정보를 넣어요!
     commentDB.add(comment).then((doc) => {
       const postDB = firestore.collection("post");
       comment = { ...comment, id: doc.id };
 
       const post = getState().post.list.find((post) => post.id === postId);
 
-      //   firestore에 저장된 값을 +1해줍니다!
       const increment = fieldValue.increment(1);
 
-      // post에도 countComment를 하나 플러스 해줍니다.
       postDB
         .doc(postId)
         .update({ countComment: increment })
@@ -90,7 +77,6 @@ const addCommentFB = (postId, contents) => {
               })
             );
           }
-          // 알림 리스트에 하나를 추가해줍니다!
           const notiItem = realtime
             .ref(`noti/${post.userInfo.userId}/list`)
             .push();
@@ -99,7 +85,7 @@ const addCommentFB = (postId, contents) => {
             postId: post.id,
             userName: comment.userName,
             imageURL: post.imageURL,
-            insert_dt: comment.insert_dt
+            insertDate: comment.insertDate
           }, (err) => {
             if (err){
                 console.log('알림 저장 실패');
@@ -120,8 +106,6 @@ export default handleActions(
   {
     [SET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        // comment는 딕셔너리 구조로 만들어서,
-        // postId로 나눠 보관합시다! (각각 게시글 방을 만들어준다고 생각하면 구조 이해가 쉬워요.)
         draft.list[action.payload.postId] = action.payload.commentList;
       }),
       [ADD_COMMENT]: (state, action) => produce(state, (draft) => {

@@ -1,8 +1,6 @@
 export const getCookie = (name) => {
   const value = ";" + document.cookie;
   const parts = value.split(`; ${name}=`);
-  // cookie 정보 aaa = xxx; userId = felix 로 저장되는데 ; 부터 userId= 까지를 잘라서
-  // [aaa = xxx / aaa; abc = sss]
 
   if (parts.length === 2) {
     return parts.pop().split(";").shift();
@@ -19,6 +17,5 @@ export const setCookie = (name, value, exp = 5) => {
 export const deleteCookie = (name) => {
   const date = new Date("2020-01-01").toUTCString();
 
-  //console.log(date);
   document.cookie = name+"=; expires="+date;
 }

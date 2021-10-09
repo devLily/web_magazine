@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../features/post";
 import { actionCreators as imageActions } from "../features/image";
 import { Img, Button, Text, Input } from "../components/elements";
-// import { storage } from "../firebase";
 
 import styled from "styled-components";
 
@@ -19,12 +18,10 @@ export default function PostWrite(props) {
 
   const { history } = props;
   const postId = props.match.params.id;
-  const isEdit = postId ? true : false;
 
+  const isEdit = postId ? true : false;
   const post = isEdit ? postList.find((post) => post.id === postId) : null;
   const [postText, setPostText] = useState(post ? post.contents : "");
-
-  console.log("post", post);
 
   useEffect(() => {
     if (isEdit && !post) {
@@ -37,7 +34,6 @@ export default function PostWrite(props) {
     if (isEdit) {
       dispatch(imageActions.setPreview(post.imageURL));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const goBack = () => {
@@ -49,9 +45,7 @@ export default function PostWrite(props) {
   };
 
   const selectFile = (e) => {
-    console.log(e.target.files);
     if (fileInput.current) {
-      console.log(fileInput.current.files);
     }
     const reader = new FileReader();
     const file = fileInput.current.files[0];
@@ -59,7 +53,6 @@ export default function PostWrite(props) {
     reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      console.log(reader.result);
       dispatch(imageActions.setPreview(reader.result));
     };
   };
@@ -135,9 +128,7 @@ const SectionWrap = styled.div`
   border: 1px solid pink;
   box-sizing: border-box;
   padding-top: 100px;
-  /* display: flex; */
   align-items: center;
-  /* text-align: center; */
   width: 100%;
   height: 100%;
 `;
@@ -146,20 +137,9 @@ const WranBox = styled.div`
   padding-top: 200px;
   text-align: center;
 `;
-// const TextEffect = styled.h3`
-//   float: left;
-//   /* color: #ffc300; */
-//   color: #4b6cb7;
-// `;
-
-// const Fileinput = styled.input`
-//   /* border-bottom: 1px solid black; */
-//   width: 100%;
-// `;
 
 const Label = styled.label`
   display: block;
-  /* text-align: start; */
 `;
 
 const BtnWrap = styled.div`
@@ -167,40 +147,3 @@ const BtnWrap = styled.div`
   justify-content: center;
   margin: 20px;
 `;
-
-// const Container = styled.div`
-//   position: relative;
-//   align-items: center;
-//   display: flex;
-//   border: 1px solid rgba(0, 0, 0, 0.3);
-// `;
-
-// const Inputs = styled.input`
-//   height: 100%;
-//   left: 0;
-//   position: absolute;
-//   top: 0;
-//   width: 100%;
-//   opacity: 0;
-// `;
-
-// {/* <div class="avatar">
-//     <!-- Avatar image -->
-//     <img class="avatar__image" src="..." />
-// </div>
-
-// .avatar {
-//   /* Rounded border */
-//   border-radius: 50%;
-//   height: 64px;
-//   width: 64px;
-// }
-
-// .avatar__image {
-//   /* Rounded border */
-//   border-radius: 50%;
-
-//   /* Take full size */
-//   height: 100%;
-//   width: 100%;
-// } */}
