@@ -36,7 +36,11 @@ export default function Signup(props) {
       alert("사용하실 닉네임을 입력해주세요!");
       return;
     }
-    if (!pwd || pwd.length < 5) {
+    if (pwd.length < 5) {
+      alert("비밀번호는 6자리 이상입력해주세요!");
+      return;
+    }
+    if (!pwd) {
       alert("비밀번호 입력란을 다시 확인해주세요!");
       return;
     }
